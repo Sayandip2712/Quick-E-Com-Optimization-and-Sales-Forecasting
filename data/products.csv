@@ -1,0 +1,21 @@
+product_id,product_name,category,price,event_sensitive
+P0001,Potato Chips 90g,snacks,20,True
+P0002,Nachos 150g,snacks,60,True
+P0003,Mixed Namkeen 200g,snacks,55,True
+P0004,Frozen Momos 12pc,instant_food,130,True
+P0005,Instant Noodles 4-pack,instant_food,60,True
+P0006,Cola 750ml,beverages,40,True
+P0007,Beer (non-alc) 330ml,beverages,60,True
+P0008,Energy Drink 250ml,beverages,45,True
+P0009,Ice Cream Tub 500ml,frozen_desserts,150,True
+P0010,Chicken Wings Frozen 500g,frozen_meat,220,True
+P0011,Toned Milk 500ml,dairy,28,False
+P0012,Bread 400g,bakery,45,False
+P0013,Eggs (6pc),dairy,42,False
+P0014,Onions 1kg,produce,35,False
+P0015,Tomatoes 1kg,produce,30,False
+P0016,Basmati Rice 1kg,staples,90,False
+P0017,Toor Dal 1kg,staples,140,False
+P0018,Dish Wash Liquid 500ml,household,99,False
+P0019,Detergent Powder 1kg,household,120,False
+P0020,Shampoo 180ml,personal_care,180,False

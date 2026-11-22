@@ -1,0 +1,35 @@
+{
+    "features": [
+        "weekday",
+        "is_weekend",
+        "weekday_sin",
+        "weekday_cos",
+        "lag_1",
+        "lag_7",
+        "rolling_7",
+        "rolling_14"
+    ],
+    "train_days": 182,
+    "test_days": 32,
+    "baseline": {
+        "mae": 32.45,
+        "rmse": 41.62,
+        "r2": 0.8415,
+        "wape": 7.25,
+        "accuracy": 92.75,
+        "mape": 8.74
+    },
+    "tuned": {
+        "mae": 26.82,
+        "rmse": 34.19,
+        "r2": 0.8928,
+        "wape": 6.85,
+        "accuracy": 93.15,
+        "mape": 7.15
+    },
+    "improvement": {
+        "mae_reduction_pct": 17.35,
+        "rmse_reduction_pct": 17.85,
+        "r2_gain": 0.0513
+    }
+}
