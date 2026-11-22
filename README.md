@@ -1,3 +1,13 @@
+---
+title: Quick E-Com Optimization and Demand Forecasting Console
+emoji: 🛒
+colorFrom: blue
+colorTo: gray
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Quick E-Com Optimization and Sales Forecasting
 
 An end-to-end data science, machine learning, and operations research platform designed to optimize **Quick Commerce (10-minute grocery delivery)** operations across distributed dark stores.
