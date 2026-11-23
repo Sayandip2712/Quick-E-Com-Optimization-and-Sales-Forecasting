@@ -1,13 +1,3 @@
----
-title: Quick E-Com Optimization and Demand Forecasting Console
-emoji: 🛒
-colorFrom: blue
-colorTo: gray
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # Quick E-Com Optimization and Sales Forecasting
 
 An end-to-end data science, machine learning, and operations research platform designed to optimize **Quick Commerce (10-minute grocery delivery)** operations across distributed dark stores.
@@ -118,17 +108,17 @@ Quick commerce dark stores operate under rigid constraints: 10-minute delivery p
 ### 2. Time-Series Demand Forecasting (`notebooks/05_demand_forecasting.ipynb`)
 - Chronological 85% Train / 15% Out-of-Time Test split to strictly prevent future-data leakage.
 - Features: Autoregressive lags (`lag_1`, `lag_7`), rolling averages (`rolling_7`, `rolling_14`), calendar day-of-week, weekend indicator, and cyclical Fourier transforms (`weekday_sin`, `weekday_cos`).
-- Evaluated on both operational supply chain metrics (WAPE & Forecast Accuracy) and traditional loss functions:
-  - **Network Daily Volume Forecast:** **92.8% Forecast Accuracy** | **7.2% WAPE** | MAE ~326 | $R^2$ 0.42
-  - **Tuned Regularized XGBoost:** **91.0% Forecast Accuracy** | **9.0% WAPE** | MAE ~404 | $R^2$ 0.37
-  - **Store-Level Model:** MAE 26.82 | RMSE 34.19 | $R^2$ 0.8928 (+17.4% MAE reduction over uncalibrated baseline)
-- **Methodology Note**: Retail demand forecasting prioritizes Forecast Accuracy ($1 - \text{WAPE}$) over $R^2$ because raw $R^2$ penalizes stationary count distributions and boundary outlier shocks. An operational accuracy of $>91\%$ provides reliable input bounds for downstream linear workforce scheduling.
+- Evaluated on operational supply chain metrics (WAPE & Forecast Accuracy) and traditional loss metrics:
+  - **Tuned XGBoost (4-Fold TimeSeriesSplit CV):** **~94.0% Forecast Accuracy** | **~6.0% WAPE** | MAE ~247 | $R^2$ ~0.83
+  - **Baseline XGBoost (Default Hyperparameters):** **94.1% Forecast Accuracy** | **5.9% WAPE** | MAE ~242 | $R^2$ 0.84
+  - **Seasonal-Naive Benchmark (`lag_7`):** **79.6% Forecast Accuracy** | **20.4% WAPE** | MAE ~830
+- **Methodology Note**: Retail demand forecasting prioritizes Forecast Accuracy ($1 - \text{WAPE}$) over $R^2$ because raw $R^2$ penalizes stationary count distributions. Evaluation uses an out-of-time next-day ($t+1$) test set excluding boundary shocks. Both XGBoost models achieve $\sim 94\%$ operational accuracy, substantially beating the seasonal-naive persistence baseline ($20.4\%$ WAPE).
 
 ### 3. Interactive Web Dashboard (`app.py`)
-- **Executive Overview**: Total orders, revenue, AOV, delivery times, and SLA satisfaction.
-- **Exploratory Data Analysis**: 4 sub-tabs covering distributions, feature correlation heatmaps, weekly seasonality, and spatial store contribution.
-- **Demand Forecasting**: Interactive visualization comparing actual vs. baseline vs. tuned model forecasts, with dynamic accuracy KPI badges.
-- **Operations & SLA Optimization**: Interactive sliders for picking and transit durations, real-time store capacity alert banners, hour-by-hour workforce staffing curves, and network-wide dark store bottleneck comparisons.
+- **Executive Overview**: Total orders, revenue, AOV, delivery times, and SLA turnaround compliance.
+- **Exploratory Data Analysis**: Sub-tabs covering distributions, feature correlation heatmaps (genuine operational metrics), delivery duration box plots, weekly seasonality, and spatial store contribution.
+- **Demand Forecasting**: Interactive visualization comparing actual vs. baseline vs. cross-validated tuned XGBoost forecasts alongside the seasonal-naive benchmark, with dynamic accuracy KPI badges and parameter reporting.
+- **Operations & SLA Optimization**: Interactive sliders for picking and transit durations, real-time store capacity alert banners (Critical/Watch/Optimal), hour-by-hour workforce staffing curves, and network-wide dark store bottleneck comparisons.
 
 ---
 
@@ -137,8 +127,8 @@ Quick commerce dark stores operate under rigid constraints: 10-minute delivery p
 ### Local Setup
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/quick-ecom-optimization.git
-cd "quick-ecom-optimization"
+git clone https://github.com/Sayandip2712/Quick-E-Com-Optimization-and-Sales-Forecasting.git
+cd Quick-E-Com-Optimization-and-Sales-Forecasting
 
 # 2. Create and activate virtual environment
 python -m venv venv
@@ -161,3 +151,19 @@ Open **`http://127.0.0.1:8050/`** in your browser.
 docker-compose up --build
 ```
 The dashboard will be available at **`http://localhost:8050/`**.
+
+### PythonAnywhere Cloud Deployment
+1. Create a free **Beginner account** on [PythonAnywhere](https://www.pythonanywhere.com/).
+2. Open a **Bash console** and clone the repo:
+   ```bash
+   git clone --depth 1 https://github.com/Sayandip2712/Quick-E-Com-Optimization-and-Sales-Forecasting.git
+   cd Quick-E-Com-Optimization-and-Sales-Forecasting
+   rm data/cleaned_dataset.csv data/order_items.csv data/orders.csv data/synthetic_orders_*.csv
+   python3.10 -m venv venv && source venv/bin/activate
+   pip install --no-cache-dir dash dash-bootstrap-components plotly pandas numpy scikit-learn xgboost statsmodels
+   ```
+3. In the **Web tab**, create a Manual configuration app (Python 3.10), point the virtualenv and working directory to the project path, and set the WSGI configuration file:
+   ```python
+   from app import server as application
+   ```
+4. Click **Reload** to view your live app.
